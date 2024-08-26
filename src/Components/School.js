@@ -12,10 +12,14 @@ const School = () => {
                 method:'POST',
                 headers:{'Content-Type':'application/json'},
                 body:JSON.stringify({Name,Address,Contact,Pricipal})
-            }).then((res)=>{
+            }).then(async(res)=>{
                 if(res.ok){
                     alert('Details Submitted Successfully!')
 
+                }
+                if(res.status===400){
+                    const data=await res.json()
+                    alert(data.message)
                 }
             })
         }
