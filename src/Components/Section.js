@@ -13,10 +13,15 @@ const Section = () => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ Class, School,Section })
-            }).then((res) => {
+            }).then(async(res) => {
                 if (res.ok) {
                     alert('Details Submitted Successfully!')
 
+                    
+                }
+                if(res.status===400){
+                    const data = await res.json(); // Parse the response as JSON
+                 alert(data.message)
                 }
             })
         }
@@ -62,17 +67,7 @@ const Section = () => {
                 <h2>Section Master</h2>
                 <form onSubmit={OnSubmitHandler}>
                     <table>
-                        <tr>
-                            <td><label>Class : </label></td>
-                            <td><select name='Class' onChange={(e) => { setClass(e.target.value) }}>
-                                <option>Select</option>
-{
-ClassGet.map((item,index)=>(<option key={index}>{item.Class}</option>
-))
-}                               
-
-                            </select></td>  </tr>
-                        <tr>
+                    <tr>
                             <td><label>School Name : </label></td>
                             <td>
 <select name='School'onChange={(e)=>setSchool(e.target.value)}>
@@ -85,15 +80,19 @@ ClassGet.map((item,index)=>(<option key={index}>{item.Class}</option>
                             </td>
                         </tr>
                         <tr>
-                            <td><label>Section : </label></td>
-                            <td><select name='Section'onChange={(e)=>setSection(e.target.value)}>
+                            <td><label>Class : </label></td>
+                            <td><select name='Class' onChange={(e) => { setClass(e.target.value) }}>
                                 <option>Select</option>
-                                <option>A4A</option>
-                                <option>A4B</option>
-                                <option>A2A</option>
-                                <option>A2B</option>
+{
+ClassGet.map((item,index)=>(<option key={index}>{item.Class}</option>
+))
+}                               
 
-                                </select></td>
+                            </select></td>  </tr>
+                        
+                        <tr>
+                            <td><label>Section : </label></td>
+                            <td><input type='text'name='Section'onChange={(e)=>{setSection(e.target.value)}}placeholder='Section'/></td>
                         </tr>
                         <tr><td></td><td><input type='submit'value='Submit'/></td></tr>
                     </table>

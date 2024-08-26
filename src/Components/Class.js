@@ -11,10 +11,15 @@ const Class = () => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ Class, School })
-            }).then((res) => {
+            }).then(async(res) => {
+
                 if (res.ok) {
                     alert('Details Submitted Successfully!')
 
+                }
+                if(res.status===400){
+                    const data = await res.json(); // Parse the response as JSON
+                    alert(data.message)
                 }
             })
         }
@@ -36,6 +41,7 @@ const Class = () => {
             }}
             fetchSchoolGet()
     },[])
+    
     return (
 
         <>
@@ -44,6 +50,18 @@ const Class = () => {
                 <h2>Class Master</h2>
                 <form onSubmit={OnSubmitHandler}>
                     <table>
+                        <tr>
+                        <td><label>School Name : </label></td>
+                            <td>
+<select name='School'onChange={(e)=>setSchool(e.target.value)}>
+    <option>Select</option>
+    {
+        SchoolGet.map((item,index)=>(<option key={index}>{item.Name}</option>))
+        
+    }
+</select>
+                            </td>
+                        </tr>
                         <tr>
                             <td><label>Class : </label></td>
                             <td><select name='Class' onChange={(e) => { setClass(e.target.value) }}>
@@ -58,18 +76,7 @@ const Class = () => {
 
 
                             </select></td>  </tr>
-                        <tr>
-                            <td><label>School Name : </label></td>
-                            <td>
-<select name='School'onChange={(e)=>setSchool(e.target.value)}>
-    <option>Select</option>
-    {
-        SchoolGet.map((item,index)=>(<option key={index}>{item.Name}</option>))
-        
-    }
-</select>
-                            </td>
-                        </tr>
+                        
                         <tr><td></td><td><input type='submit'value='Submit'/></td></tr>
                     </table>
                 </form>
